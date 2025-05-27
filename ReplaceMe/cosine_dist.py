@@ -38,7 +38,6 @@ def cosine_dist(
     activations_save_path: Optional[str] = None,
     use_4bit: bool = False,
     save_path: Optional[str] = None,
-    min_distance_layer: Optional[int] = None,
     token: Optional[str] = None,
     save_transform_only: bool = False,
     diag: bool = False,
@@ -69,7 +68,6 @@ def cosine_dist(
         activations_save_path: Path to save activations
         use_4bit: Whether to use 4-bit quantization
         save_path: Path to save transformed model
-        min_distance_layer: index of start layer for cut
         token: Authentication token
         save_transform_only: Whether to only save the transform
         diag: Whether to use diagonal matrix
@@ -180,11 +178,12 @@ def cosine_dist(
             mlp_activations[f'layer_{i}_mlp'] for i in range(model.config.num_hidden_layers)
         ]
         hidden_states_mlp = hidden_states_mlp_list[start_id - num_layer - 1]
-
+        
         # Reshape activations
         hidden_states_mlp = hidden_states_mlp.view(-1, hidden_size).to(torch.float64)
-        hidden_states_i = hidden_states[start_id - num_layer - 1].view(-1, hidden_size).to(torch.float64)
-        hidden_states_n = hidden_states[end_id - num_layer - 1].view(-1, hidden_size).to(torch.float64)
+        device = hidden_states_mlp.device
+        hidden_states_i = hidden_states[start_id - num_layer - 1].view(-1, hidden_size).to(torch.float64).to(device)
+        hidden_states_n = hidden_states[end_id - num_layer - 1].view(-1, hidden_size).to(torch.float64).to(device)
         
         a1_batch = hidden_states_mlp
         a2_batch = hidden_states_n + hidden_states_mlp - hidden_states_i
