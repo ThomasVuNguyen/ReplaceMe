@@ -1,0 +1,16 @@
+setup.py
+ReplaceMe/ReplaceMe_pipeline.py
+ReplaceMe/UIDL_pipeline.py
+ReplaceMe/cosine_dist.py
+ReplaceMe/distance.py
+ReplaceMe/evaluator.py
+ReplaceMe/init.py
+ReplaceMe/lstsq.py
+ReplaceMe/uidl_method.py
+ReplaceMe/utils.py
+ReplaceMe.egg-info/PKG-INFO
+ReplaceMe.egg-info/SOURCES.txt
+ReplaceMe.egg-info/dependency_links.txt
+ReplaceMe.egg-info/entry_points.txt
+ReplaceMe.egg-info/requires.txt
+ReplaceMe.egg-info/top_level.txt

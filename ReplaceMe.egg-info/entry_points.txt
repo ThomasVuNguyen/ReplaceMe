@@ -1,0 +1,7 @@
+[console_scripts]
+evaluate_model = ReplaceMe.evaluator:run_from_config
+get_distance_analysis = ReplaceMe.distance:run_from_config
+get_lt_with_lstsq = ReplaceMe.lstsq:run_from_config
+get_lt_with_solvers = ReplaceMe.cosine_dist:run_from_config
+run_replaceme = ReplaceMe.ReplaceMe_pipeline:run_from_config
+run_uidl = ReplaceMe.UIDL_pipeline:run_from_config

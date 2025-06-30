@@ -1,0 +1,27 @@
+model_path: "./output_models/Qwen_Qwen3-1.7B_4_layers_7_11_Open-Orca_SlimOrca_8000_ReplaceMe_lstsq_1"
+# A dictionary defining the evaluation tasks to run.
+# For each task, you can specify the number of few-shot examples.
+# device: "cpu"
+
+quantization:
+  load_in_4bit: True
+  bnb_4bit_use_double_quant: True
+  bnb_4bit_quant_type: "nf4"
+  bnb_4bit_compute_dtype: "bfloat16"
+
+tasks:
+  boolq:
+    fewshots: 0
+  lambada_openai:
+    fewshots: 0
+  openbookqa:
+    fewshots: 0
+  piqa:
+    fewshots: 0
+  race:
+    fewshots: 0
+  sciq:
+    fewshots: 0
+  winogrande:
+    fewshots: 5
+

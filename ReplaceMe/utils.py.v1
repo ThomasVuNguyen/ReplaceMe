@@ -18,7 +18,7 @@ from termcolor import colored
 from torch.utils.data import DataLoader, Dataset
 from torchmin import minimize
 from tqdm import tqdm
-from transformers import PreTrainedTokenizerBase, BitsAndBytesConfig
+from transformers import PreTrainedTokenizerBase
 
 # --------------------------
 # Seeding Function
@@ -54,7 +54,7 @@ def truncate_model(model: nn.Module, start_layer: int, end_layer: int) -> nn.Mod
     """Truncate model by removing specified layers."""
     model.config.num_hidden_layers -= (end_layer - start_layer)
     model.model.layers = nn.ModuleList([
-        layer for idx, layer in enumerate(model.model.layers)
+        layer for idx, layer in enumerate(model.model.layers) 
         if idx < start_layer or idx >= end_layer
     ])
     return model
@@ -111,8 +111,8 @@ def _load_mixed_dataset(size: int, subset: str, tokenizer: PreTrainedTokenizerBa
     """Helper to load mixed Orca and FineWeb dataset."""
     orca_data = _load_orca_dataset(size//2, tokenizer)
     fineweb = datasets.load_dataset(
-        "HuggingFaceFW/fineweb",
-        name='sample-10BT',
+        "HuggingFaceFW/fineweb", 
+        name='sample-10BT', 
         split=subset
     ).select(range(size - size//2))
     return datasets.concatenate_datasets([orca_data, fineweb])
@@ -123,13 +123,13 @@ def _load_mixed_dataset(size: int, subset: str, tokenizer: PreTrainedTokenizerBa
 # --------------------------
 
 def get_last_non_padded_tokens(
-    hidden_states: List[torch.Tensor],
+    hidden_states: List[torch.Tensor], 
     attention_mask: torch.Tensor
 ) -> List[torch.Tensor]:
     """Extract last non-padded tokens from each layer's hidden states."""
     return [
         torch.stack([
-            layer[batch, mask.nonzero()[-1], :]
+            layer[batch, mask.nonzero()[-1], :] 
             for batch, mask in enumerate(attention_mask)
         ])
         for layer in hidden_states
@@ -141,7 +141,7 @@ def get_last_non_padded_tokens(
 # --------------------------
 
 def compute_block_distances(
-    hidden_states: List[torch.Tensor],
+    hidden_states: List[torch.Tensor], 
     layers_to_skip: int,
     distance_fn=angular_distance
 ) -> List[float]:
@@ -168,7 +168,7 @@ class LowerTriangularLinear(nn.Module):
         return x @ torch.tril(self.weight).t()
 
 def optimizing_method(
-    a1: torch.Tensor,
+    a1: torch.Tensor, 
     a2: torch.Tensor,
     a3: torch.Tensor = None,
     solver: str = "cg"
@@ -176,13 +176,13 @@ def optimizing_method(
     """Optimize transformation matrix using specified solver."""
     class ActivationDataset(Dataset):
         def __init__(self, a1: torch.Tensor, a2: torch.Tensor, a3: torch.Tensor):
-            self.a1, self.a2, self.a3 = a1, a2, a3
+            self.a1, self.a2, self.a3 = a1, a2, a3            
         def __len__(self) -> int:
             return len(self.a1)
         def __getitem__(self, idx: int) -> Tuple[torch.Tensor, torch.Tensor]:
             attn = [-1]
             if self.a3 is not None:
-                attn = self.a3[idx]
+                attn = self.a3[idx]                
             return self.a1[idx], self.a2[idx], attn
 
     def cosine_loss(XA: torch.Tensor, Y: torch.Tensor) -> torch.Tensor:
@@ -221,7 +221,7 @@ def adam_method(
     """Optimize transformation using Adam optimizer."""
     class ActivationDataset(Dataset):
         def __init__(self, a1: torch.Tensor, a2: torch.Tensor, a3: torch.Tensor):
-            self.a1, self.a2, self.a3 = a1, a2, a3
+            self.a1, self.a2, self.a3 = a1, a2, a3            
         def __len__(self) -> int:
             return len(self.a1)
         def __getitem__(self, idx: int) -> Tuple[torch.Tensor, torch.Tensor]:
@@ -294,33 +294,24 @@ def adam_method(
 # Evaluation Utilities
 # --------------------------
 
-def eval_model(model_path: str, **kwargs) -> Dict:
+def eval_model(model_path: str) -> Dict:
     """Evaluate model on standard benchmark tasks."""
     result_path = f'benchmark_results/{os.path.basename(model_path)}.json'
     if os.path.exists(result_path):
         with open(result_path) as f:
             return json.load(f)
 
-    device = kwargs.get("device", "auto")
-    quantization_config = kwargs.get("quantization")
-
-    model_args = f"pretrained={model_path},dtype=bfloat16,device={device}"
-    if quantization_config:
-        q_args = ",".join(f"{k}={v}" for k, v in quantization_config.items())
-        model_args = f"{model_args},{q_args}"
-
-
     wino_res = evaluator.simple_evaluate(
         model='hf',
         tasks=['winogrande'],
-        model_args=model_args,
+        model_args=f"pretrained={model_path},dtype=bfloat16,device=auto,parallelize=False,device_map=auto",
         num_fewshot=5
     )['results']
     
     other_res = evaluator.simple_evaluate(
         model='hf',
         tasks=['boolq', 'race', 'openbookqa', 'piqa', 'sciq', 'lambada_openai'],
-        model_args=model_args,
+        model_args=f"pretrained={model_path},dtype=bfloat16,device=auto,parallelize=False,device_map=auto",
         num_fewshot=0
     )['results']
     
@@ -332,28 +323,20 @@ def eval_model(model_path: str, **kwargs) -> Dict:
     
     return results
 
-def eval_model_specific(model_path: str, tasks: Dict, **kwargs) -> Dict:
+def eval_model_specific(model_path: str, tasks: Dict) -> Dict:
     """Evaluate model on specified tasks with custom fewshot settings."""
     result_path = f'benchmark_results/{os.path.basename(model_path)}.json'
     if os.path.exists(result_path):
         with open(result_path) as f:
             return json.load(f)
 
-    device = kwargs.get("device", "auto")
-    quantization_config = kwargs.get("quantization")
-
-    model_args = f"pretrained={model_path},dtype=bfloat16,device={device}"
-    if quantization_config:
-        q_args = ",".join(f"{k}={v}" for k, v in quantization_config.items())
-        model_args = f"{model_args},{q_args}"
-
     results = {}
     for task, config in tasks.items():
         res = evaluator.simple_evaluate(
             model='hf',
             tasks=[task],
-            model_args=model_args,
-            num_fewshot=config.get("fewshots", 0) # Use .get for safety
+            model_args=f"pretrained={model_path},dtype=bfloat16,device=auto",
+            num_fewshot=config["fewshots"]
         )['results']
         results.update(res)
     
