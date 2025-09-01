@@ -17,8 +17,11 @@ nvcr.io#nvidia/pytorch:23.10-py3
 ### Installation
 ```bash
 git clone https://github.com/mts-ai/ReplaceMe.git
-cd patchme
+cd ReplaceMe
+python3 -m venv myenv
+source myenv/bin/activate
 pip install -e .
+pip install --upgrade transformers
 ```
 ### Basic Usage
 ```bash
