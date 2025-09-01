@@ -26,10 +26,10 @@ pip install --upgrade transformers
 ### Basic Usage
 ```bash
 # LSTSQ method (recommended)
-run_replaceme --config ./reproduce/Replace_Me_pipeline_lstsq.yaml
+run_replaceme --config ./configs/smollm_135m/lstsq.yaml
 
 # Cosine similarity method
-run_replaceme --config ./reproduce/Replace_Me_pipeline_cosine.yaml
+run_replaceme --config ./configs/examples/Replace_Me_pipeline_cosine.yaml
 ```
 ### Update
 - 11/05/2025 Add support [(unofficial implementation)](https://github.com/arcee-ai/PruneMe) for [UIDL method](https://arxiv.org/abs/2403.17887) 
