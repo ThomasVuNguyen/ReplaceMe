@@ -2,7 +2,7 @@ method: "lstsq"
 model_path: "Qwen/Qwen3-0.6B"
 dataset: "Open-Orca/SlimOrca"
 dataset_column: "text"
-batch_size: 1
+batch_size: 24
 max_length: 1024
 dataset_size: 8000
 dataset_subset: "train"
@@ -14,5 +14,5 @@ diag: False # whether to force the LT to be a diagonal matrix
 alpha: 0 # regularization factor (use Ridge regularization)
 distances_path: null
 num_A: 1
-layers_to_skip: 4
+layers_to_skip: 9
 merge_consecutive: True 

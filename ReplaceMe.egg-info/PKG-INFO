@@ -1,39 +1,16 @@
-Metadata-Version: 2.4
+Metadata-Version: 2.1
 Name: ReplaceMe
 Version: 0.1.1
 Summary: A highly efficient and robust package developed by MTS AI researchers.
 Home-page: https://github.com/mts-ai/ReplaceMe
 Author: MTS AI Research Team
 Author-email: a.ammar@mts.ai
+License: UNKNOWN
+Platform: UNKNOWN
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: Apache 2.0 License
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
-Requires-Dist: torch==2.5.1
-Requires-Dist: torchvision
-Requires-Dist: torchaudio
-Requires-Dist: transformers==4.46.3
-Requires-Dist: accelerate==1.0.1
-Requires-Dist: pydantic==2.9.2
-Requires-Dist: datasets==3.0.2
-Requires-Dist: peft==0.13.2
-Requires-Dist: fire
-Requires-Dist: clearml
-Requires-Dist: evaluate
-Requires-Dist: bitsandbytes
-Requires-Dist: lm-eval==0.4.8
-Requires-Dist: colorama
-Requires-Dist: pytorch-minimize
-Requires-Dist: termcolor
-Dynamic: author
-Dynamic: author-email
-Dynamic: classifier
-Dynamic: description
-Dynamic: description-content-type
-Dynamic: home-page
-Dynamic: requires-dist
-Dynamic: requires-python
-Dynamic: summary
 
 # ReplaceMe: Training-Free Depth Pruning via Block Pruning & Linear Transformations 🔥
 
@@ -54,16 +31,19 @@ nvcr.io#nvidia/pytorch:23.10-py3
 ### Installation
 ```bash
 git clone https://github.com/mts-ai/ReplaceMe.git
-cd patchme
+cd ReplaceMe
+python3 -m venv myenv
+source myenv/bin/activate
 pip install -e .
+pip install --upgrade transformers
 ```
 ### Basic Usage
 ```bash
 # LSTSQ method (recommended)
-run_replaceme --config ./reproduce/Replace_Me_pipeline_lstsq.yaml
+run_replaceme --config ./configs/smollm_135m/lstsq.yaml
 
 # Cosine similarity method
-run_replaceme --config ./reproduce/Replace_Me_pipeline_cosine.yaml
+run_replaceme --config ./configs/examples/Replace_Me_pipeline_cosine.yaml
 ```
 ### Update
 - 11/05/2025 Add support [(unofficial implementation)](https://github.com/arcee-ai/PruneMe) for [UIDL method](https://arxiv.org/abs/2403.17887) 
@@ -148,3 +128,5 @@ We welcome contributions! Please see our contribution guidelines and open an iss
 Maintained by MTS AI Research 
 - Documentation
 - Paper
+
+
