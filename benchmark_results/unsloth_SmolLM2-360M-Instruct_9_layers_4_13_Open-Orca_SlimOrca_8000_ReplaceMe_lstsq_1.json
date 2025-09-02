@@ -1,0 +1,45 @@
+{
+    "boolq": {
+        "alias": "boolq",
+        "acc,none": 0.4636085626911315,
+        "acc_stderr,none": 0.008721861424877861
+    },
+    "lambada_openai": {
+        "alias": "lambada_openai",
+        "perplexity,none": 312.9204587474663,
+        "perplexity_stderr,none": 13.44512934429745,
+        "acc,none": 0.15175625849019989,
+        "acc_stderr,none": 0.0049985692149138285
+    },
+    "openbookqa": {
+        "alias": "openbookqa",
+        "acc,none": 0.164,
+        "acc_stderr,none": 0.016575811142446696,
+        "acc_norm,none": 0.298,
+        "acc_norm_stderr,none": 0.02047511809298896
+    },
+    "piqa": {
+        "alias": "piqa",
+        "acc,none": 0.5903155603917302,
+        "acc_stderr,none": 0.01147393200718761,
+        "acc_norm,none": 0.6033732317736671,
+        "acc_norm_stderr,none": 0.011413778810510455
+    },
+    "race": {
+        "alias": "race",
+        "acc,none": 0.2669856459330144,
+        "acc_stderr,none": 0.013691465823543757
+    },
+    "sciq": {
+        "alias": "sciq",
+        "acc,none": 0.763,
+        "acc_stderr,none": 0.01345407046257795,
+        "acc_norm,none": 0.707,
+        "acc_norm_stderr,none": 0.014399942998441276
+    },
+    "winogrande": {
+        "alias": "winogrande",
+        "acc,none": 0.5114443567482242,
+        "acc_stderr,none": 0.014048804199859316
+    }
+}
