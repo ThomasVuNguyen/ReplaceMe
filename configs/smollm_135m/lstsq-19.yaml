@@ -1,8 +1,8 @@
 method: "lstsq"
-model_path: "unsloth/SmolLM-135M-Instruct
+model_path: "HuggingFaceTB/SmolLM-135M-Instruct"
 dataset: "Open-Orca/SlimOrca"
 dataset_column: "text"
-batch_size: 1
+batch_size: 24
 max_length: 1024
 dataset_size: 8000
 dataset_subset: "train"
@@ -14,5 +14,5 @@ diag: False # whether to force the LT to be a diagonal matrix
 alpha: 0 # regularization factor (use Ridge regularization)
 distances_path: null
 num_A: 1
-layers_to_skip: 4
-merge_consecutive: True 
+layers_to_skip: 19
+merge_consecutive: True
